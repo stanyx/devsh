@@ -5,6 +5,7 @@ User friendly and super flexible command line interface (CLI) for programmers
 
 - Create new project with boilerplate structure for modern languages
 - Git powered version management with friendly commands
+- Docker powered container database management
 - Archive
 - Backup
 
@@ -15,6 +16,10 @@ User friendly and super flexible command line interface (CLI) for programmers
 Welcome to DevSH - flexible CLI for programmers
 
 new_project my_cool_project
+dbstart postgres
+dbstart mysql
+cachestart redis
+
 ```
 
 ### Commands
@@ -23,3 +28,5 @@ new_project my_cool_project
 - save
 - undo
 - backup
+- dbstart
+- cachestart
