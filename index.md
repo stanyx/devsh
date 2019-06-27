@@ -20,12 +20,13 @@ dbstart postgres
 dbstart mysql
 cachestart redis
 
+saveall
 ```
 
 ### Commands
 
 - archive
-- save
+- saveall
 - undo
 - backup
 - dbstart
