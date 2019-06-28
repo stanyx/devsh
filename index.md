@@ -15,7 +15,7 @@ User friendly and super flexible command line interface (CLI) for programmers
 ~/devsh
 Welcome to DevSH - flexible CLI for programmers
 
-new_project my_cool_project
+create my_cool_project
 dbstart postgres
 dbstart mysql
 cachestart redis

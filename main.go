@@ -8,6 +8,7 @@ import (
 	"bufio"
 	"strings"
 	"os/exec"
+	"devsh/cmd"
 )
 
 type Cmd struct {
@@ -32,7 +33,7 @@ func InitCommands() []Cmd {
 		{Name: "dbstart", Description: "blank"},
 		{Name: "dbcheck", Description: "blank"},
 		{Name: "sql", Description: "blank"},
-		{Name: "uget", Description: "send GET http request to provided url"},
+		{Name: "uget", Description: "send GET http request to provided url", f: cmd.SendGETRequest},
 		{Name: "upost", Description: "send POST http request to provided url"},
 		{Name: "calc", Description: "blank"},
 		{Name: "deploy", Description: "blank"},
@@ -60,6 +61,23 @@ func createProject(r *bufio.Reader) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// create .gitignore
+	if f, err := os.Create(path.Join(projectPath, ".gitignore")); err != nil {
+		log.Fatal(err)
+	} else {
+		f.Close()
+		fmt.Println("create .gitignore - ok")
+	}
+
+	// create README.md
+	if f, err := os.Create(path.Join(projectPath, "README.md")); err != nil {
+		log.Fatal(err)
+	} else {
+		f.Close()
+		fmt.Println("create README.md - ok")
+	}
+
 	colorTpl := "%s"
 	fmt.Print(fmt.Sprintf(colorTpl, "\ncreate empty project"), projectPath)
 	currentProject = projectPath
