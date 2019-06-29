@@ -1,13 +1,23 @@
 ## DevSH
-User friendly and super flexible command line interface (CLI) for programmers
+Not Production ready
+Work in progress...
 
-Works on Windows 10 And Linux
+User friendly and super flexible command line interface (CLI) for programmers
+Works on Windows 10 And Linux!
+
+Can't memorize all git, bash, docker commands?
+DevSH contains minimal set of useful commands. Enter help to show all commands.
+
+Execute mathematic functions, SQL expression, send HTTP request
+
+Stop wasting your time. Try it!)
 
 ### Features
 
 - Create new project with boilerplate structure for modern languages
 - Git powered version management with friendly commands
-- Docker powered container database management
+- Run popular databases in Docker and experiment with it
+- Create, Edit and Save text files
 - Archive
 - Backup
 - More to come...
@@ -23,19 +33,19 @@ Works on Windows 10 And Linux
 #                                       #
 ##### Enter help to getting started #####
 
-create my_cool_project
-dbstart postgres
-dbstart mysql
-cachestart redis
+>>create my_cool_project
+>>dbstart postgres
+>>dbstart mysql
+>>cachestart redis
 
-saveall
+>>saveall
 
-sci
-1 + 2
+>>sci
+[sci]>1 + 2
 3
-
-sqrt(4)
+[sci]>sqrt(4)
 2
+>>
 ```
 
 ### Commands
@@ -46,3 +56,4 @@ sqrt(4)
 - backup
 - dbstart
 - cachestart
+- TODO
