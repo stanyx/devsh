@@ -21,6 +21,7 @@ var commands []Cmd
 
 func InitCommands() []Cmd {
 	return []Cmd{
+		{Name: "sci", Description: "provide execution of mathematic expression by Python", f: cmd.PyExec},
 		{Name: "create", Description: "create blank project with Git support", f: createProject},
 		{Name: "clone", Description: "clone project with Git support"},
 		{Name: "select", Description: "activate project", f: selectProject},
@@ -33,9 +34,8 @@ func InitCommands() []Cmd {
 		{Name: "dbstart", Description: "blank"},
 		{Name: "dbcheck", Description: "blank"},
 		{Name: "sql", Description: "blank"},
-		{Name: "uget", Description: "send GET http request to provided url", f: cmd.SendGETRequest},
-		{Name: "upost", Description: "send POST http request to provided url"},
-		{Name: "calc", Description: "blank"},
+		{Name: "get", Description: "send GET http request to provided url", f: cmd.SendGETRequest},
+		{Name: "post", Description: "send POST http request to provided url"},
 		{Name: "deploy", Description: "blank"},
 		{Name: "cachestart", Description: "blank"},
 		{Name: "help", Description: "show list of available commands", f: showHelp},
