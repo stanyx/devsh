@@ -2,117 +2,39 @@ package main
 
 import (
 	"os"
-	"log"
 	"fmt"
-	"path"
 	"bufio"
 	"strings"
-	"os/exec"
 	"devsh/cmd"
 )
 
-type Cmd struct {
-	Name string
-	Description string
-	f func(*bufio.Reader)
-}
+var commands []cmd.Cmd
 
-var commands []Cmd
-
-func InitCommands() []Cmd {
-	return []Cmd{
-		{Name: "sci", Description: "provide execution of mathematic expression by Python", f: cmd.PyExec},
-		{Name: "create", Description: "create blank project with Git support", f: createProject},
+func InitCommands() []cmd.Cmd {
+	return []cmd.Cmd{
+		{Name: "sci", Description: "provide execution of mathematic expression by Python", F: cmd.PyExec},
+		{Name: "fs", Description: "subshell for file system commands", F: cmd.FSCmd},
+		{Name: "create", Description: "create blank project with Git support", F: cmd.CreateProject},
 		{Name: "clone", Description: "clone project with Git support"},
-		{Name: "select", Description: "activate project", f: selectProject},
+		{Name: "select", Description: "activate project", F: cmd.SelectProject},
 		{Name: "size", Description: "show current project size"},
 		{Name: "snippet", Description: "blank"},
-		{Name: "saveall", Description: "blank", f: saveAll},
+		{Name: "saveall", Description: "blank", F: cmd.SaveAll},
 		{Name: "archive", Description: "blank"},
 		{Name: "undo", Description: "blank"},
 		{Name: "backup", Description: "blank"},
 		{Name: "dbstart", Description: "blank"},
 		{Name: "dbcheck", Description: "blank"},
 		{Name: "sql", Description: "blank"},
-		{Name: "get", Description: "send GET http request to provided url", f: cmd.SendGETRequest},
+		{Name: "get", Description: "send GET http request to provided url", F: cmd.SendGETRequest},
 		{Name: "post", Description: "send POST http request to provided url"},
 		{Name: "deploy", Description: "blank"},
 		{Name: "cachestart", Description: "blank"},
-		{Name: "help", Description: "show list of available commands", f: showHelp},
+		{Name: "help", Description: "show list of available commands", F: showHelp},
 	}
 }
 
-var currentProject string
-
-func createProject(r *bufio.Reader) {
-	fmt.Println("enter project name: ")
-	line, _ := r.ReadString('\n')
-	projectName := strings.Trim(line, "\r\n")
-	currentDir, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
-	projectPath := path.Join(currentDir, projectName)
-	err = os.MkdirAll(projectPath, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = exec.Command("git", "-C", projectPath, "init").Output()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// create .gitignore
-	if f, err := os.Create(path.Join(projectPath, ".gitignore")); err != nil {
-		log.Fatal(err)
-	} else {
-		f.Close()
-		fmt.Println("create .gitignore - ok")
-	}
-
-	// create README.md
-	if f, err := os.Create(path.Join(projectPath, "README.md")); err != nil {
-		log.Fatal(err)
-	} else {
-		f.Close()
-		fmt.Println("create README.md - ok")
-	}
-
-	colorTpl := "%s"
-	fmt.Print(fmt.Sprintf(colorTpl, "\ncreate empty project"), projectPath)
-	currentProject = projectPath
-}
-
-func selectProject(r *bufio.Reader) {
-	fmt.Println("enter project name: ")
-	line, _ := r.ReadString('\n')
-	projectName := strings.Trim(line, "\r\n")
-	currentDir, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
-	currentProject = path.Join(currentDir, projectName)
-}
-
-func saveAll(r *bufio.Reader) {
-	if currentProject == "" {
-		fmt.Println("project not selected")
-		return
-	}
-	out, err := exec.Command("git", "-C", currentProject, "add", "-A").Output()
-	if err != nil {
-		fmt.Println("add error: ", string(out))
-		log.Fatal(err)
-	}
-	out, err = exec.Command("git", "-C", currentProject, "commit", "-am", "\".\"").Output()
-	if err != nil {
-		fmt.Println("commit error: ", string(out))
-		log.Fatal(err)
-	}
-	fmt.Println(string(out))
-}
-
-func showHelp(r *bufio.Reader) {
+func showHelp(r *bufio.Reader, args ...string) {
 	fmt.Println("\n[ List or commands ]\n")
 	for _, cmd := range commands {
 		fmt.Printf("* %s - %s\n", cmd.Name, cmd.Description)
@@ -133,7 +55,7 @@ func main() {
 
 	fmt.Printf(welcomeMessage)
 	commands = InitCommands()
-	commandMap := make(map[string]Cmd)
+	commandMap := make(map[string]cmd.Cmd)
 	for _, cmd := range commands {
 		commandMap[cmd.Name] = cmd
 	}
@@ -145,8 +67,8 @@ func main() {
 		}
 		input := strings.Trim(line, "\r\n")
 		if cmd, ok := commandMap[input]; ok {
-			if cmd.f != nil {
-				cmd.f(reader)
+			if cmd.F != nil {
+				cmd.F(reader)
 			}
 		} else {
 			fmt.Println("unknown command")

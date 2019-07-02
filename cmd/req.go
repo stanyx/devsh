@@ -19,7 +19,7 @@ func headerKeysSorted(h http.Header) []string {
 }
 
 // SendGETRequest send http GET request to provided url
-func SendGETRequest(r *bufio.Reader) {
+func SendGETRequest(r *bufio.Reader, args ...string) {
 
 	line, _ := r.ReadString('\n')
 	url := strings.Trim(line, "\r\n")

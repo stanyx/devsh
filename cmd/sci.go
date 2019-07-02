@@ -1,20 +1,19 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"log"
-	"bufio"
-	"sync"
-	"strings"
-	"strconv"
 	"os"
 	"os/exec"
 	"os/user"
 	"path"
 	"path/filepath"
 	"runtime"
+	"strconv"
+	"strings"
+	"sync"
 )
-
 
 func searchPyBin() string {
 	var candidates []string
@@ -44,12 +43,12 @@ func searchPyBin() string {
 	for _, p := range pyPaths {
 		basePath := filepath.Base(p)
 		strVersion := strings.TrimPrefix(strings.Replace(basePath, "-", "", -1), "Python")
-		version, _:= strconv.Atoi(strVersion)
+		version, _ := strconv.Atoi(strVersion)
 		if version > 0 {
 			versionsWithPaths[version] = p
 			if version > maxVersion {
 				maxVersion = version
-			} 
+			}
 		}
 	}
 	return versionsWithPaths[maxVersion]
@@ -80,7 +79,7 @@ func execPython(expression string) {
 }
 
 //PyExec execute Python expression and print results
-func PyExec(r *bufio.Reader) {
+func PyExec(r *bufio.Reader, args ...string) {
 
 	pyBinSearch.Do(func() {
 		pyPath = path.Join(searchPyBin(), "python.exe")

@@ -1,6 +1,7 @@
 # DevSH
 
 Not Production ready
+
 Work in progress...
 
 https://stanyx.github.io/devsh
@@ -14,3 +15,4 @@ Super flexible command-line utility for programmers
 - simple database management
 - sql execution
 - minimal text editor
+- crossplatform 
